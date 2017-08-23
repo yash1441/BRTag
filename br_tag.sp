@@ -6,7 +6,7 @@
 #include <clientprefs>
 
 #define PLUGIN_AUTHOR "Simon"
-#define PLUGIN_VERSION "1.0"
+#define PLUGIN_VERSION "1.1"
 #define PLUGIN_URL "yash1441@yahoo.com"
 
 Handle WinCountCookie;
@@ -36,22 +36,27 @@ public void OnPluginStart()
 	}
 }
 
+public void OnClientSettingsChanged(int client)
+{
+	if (IsValidClient(client))
+	{
+		CalculateTag(client);
+	}
+}
+
+public Action OnClientCommand(int client, int args)
+{
+	if (IsValidClient(client))
+	{
+		CalculateTag(client);
+	}
+}
+
 public void OnClientCookiesCached(int client)
 {
 	GetClientCookie(client, WinCountCookie, SavedWins[client], sizeof(SavedWins[]));
 	if (StrEqual(SavedWins[client], ""))
 		strcopy(SavedWins[client], sizeof(SavedWins[]), "0");
-}
-
-public void OnGameFrame()
-{
-	for (int i = MaxClients; i > 0; --i)
-	{
-		if (IsValidClient(i))
-		{
-			CalculateTag(i);
-		}
-	}
 }
 
 public void CalculateTag(int client)
