@@ -6,7 +6,7 @@
 #include <clientprefs>
 
 #define PLUGIN_AUTHOR "Simon"
-#define PLUGIN_VERSION "1.2"
+#define PLUGIN_VERSION "1.3"
 #define PLUGIN_URL "yash1441@yahoo.com"
 
 Handle WinCountCookie;
@@ -64,6 +64,7 @@ public void CalculateTag(int client)
 {
 	char NewTag[40];
 	Format(NewTag, sizeof(NewTag), "[%i Wins]", StringToInt(SavedWins[client]));
+	CS_SetMVPCount(client, StringToInt(SavedWins[client]));
 	SetTag(client, NewTag);
 }
 
