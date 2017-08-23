@@ -6,7 +6,7 @@
 #include <clientprefs>
 
 #define PLUGIN_AUTHOR "Simon"
-#define PLUGIN_VERSION "1.1"
+#define PLUGIN_VERSION "1.2"
 #define PLUGIN_URL "yash1441@yahoo.com"
 
 Handle WinCountCookie;
@@ -27,6 +27,7 @@ public void OnPluginStart()
 	WinCountCookie = RegClientCookie("BRWinCount", "Cookie for counting wins in BR.", CookieAccess_Protected);
 	
 	HookEvent("player_death", Event_PlayerDeath);
+	HookEvent("round_start", Event_RoundStart);
 	
 	for (int i = MaxClients; i > 0; --i)
 	{
@@ -72,6 +73,17 @@ public void SetTag(int client, const char[] tag)
 	CS_GetClientClanTag(client, CurrentTag, sizeof(CurrentTag));
 	if (!StrEqual(tag, CurrentTag))
 		CS_SetClientClanTag(client, tag);
+}
+
+public Action Event_RoundStart(Handle event, const char[] name, bool dontBroadcast)
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsValidClient(i))
+		{
+			CalculateTag(i);
+		}
+	}
 }
 
 public Action Event_PlayerDeath(Handle event, const char[] name, bool dontBroadcast)
