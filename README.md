@@ -1,2 +1,2 @@
-# BRTag
-Give players Tags according to their BattleRoyale wins.
+# ARTag
+Give players Tags according to their ArmsRace wins.
