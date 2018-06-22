@@ -6,7 +6,7 @@
 #include <clientprefs>
 
 #define PLUGIN_AUTHOR "Simon"
-#define PLUGIN_VERSION "1.3"
+#define PLUGIN_VERSION "1.4"
 #define PLUGIN_URL "yash1441@yahoo.com"
 
 Handle WinCountCookie;
@@ -28,6 +28,8 @@ public void OnPluginStart()
 	
 	HookEvent("player_death", Event_PlayerDeath);
 	HookEvent("round_start", Event_RoundStart);
+	
+	RegAdminCmd("sm_setwins", CommandSetWins, ADMFLAG_SLAY);
 	
 	for (int i = MaxClients; i > 0; --i)
 	{
@@ -104,6 +106,48 @@ public Action Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
 			SetClientCookie(client, WinCountCookie, SavedWins[client]);
 		}
 	}
+}
+
+public Action CommandSetWins(int client, int args)
+{                           
+	char arg1[32], arg2[20];
+	GetCmdArg(1, arg1, sizeof(arg1));
+	GetCmdArg(2, arg2, sizeof(arg2));
+	int wins = StringToInt(arg2);
+
+	if (args != 2)
+	{
+		ReplyToCommand(client, "sm_setstars <name or #userid> <stars>");
+		return Plugin_Continue;
+	}
+
+	char target_name[MAX_TARGET_LENGTH];
+	int target_list[MAXPLAYERS], target_count; bool tn_is_ml;
+
+	if ((target_count = ProcessTargetString(
+	arg1,
+	client,
+	target_list,
+	MAXPLAYERS,
+	COMMAND_TARGET_NONE,
+	target_name,
+	sizeof(target_name),
+	tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Continue;
+	}
+
+	for (int i = 0; i < target_count; i++)
+	{
+		int cookievalue;
+		cookievalue = wins;
+		IntToString(cookievalue, SavedWins[client], sizeof(SavedWins[]));
+		SetClientCookie(client, WinCountCookie, SavedWins[client]);
+	}
+
+	ShowActivity2(client, "[ArmsRace] ", "Set wins of %s to %i", target_name, wins);
+	return Plugin_Continue;
 }
 
 stock bool IsValidClient(int client)
