@@ -6,7 +6,7 @@
 #include <clientprefs>
 
 #define PLUGIN_AUTHOR "Simon"
-#define PLUGIN_VERSION "1.5"
+#define PLUGIN_VERSION "1.6"
 #define PLUGIN_URL "yash1441@yahoo.com"
 
 Handle WinCountCookie;
@@ -109,6 +109,7 @@ public Action Event_PlayerDeath(Handle event, const char[] name, bool dontBroadc
 		cookievalue++;
 		IntToString(cookievalue, SavedWins[client], sizeof(SavedWins[]));
 		SetClientCookie(client, WinCountCookie, SavedWins[client]);
+		CalculateTag(client);
 	}
 }
 
@@ -148,6 +149,7 @@ public Action CommandSetWins(int client, int args)
 		cookievalue = wins;
 		IntToString(cookievalue, SavedWins[target_list[i]], sizeof(SavedWins[]));
 		SetClientCookie(target_list[i], WinCountCookie, SavedWins[target_list[i]]);
+		CalculateTag(target_list[i]);
 	}
 
 	ShowActivity2(client, "[BattleRoyale] ", "Set wins of %s to %i", target_name, wins);
