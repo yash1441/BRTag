@@ -6,7 +6,7 @@
 #include <clientprefs>
 
 #define PLUGIN_AUTHOR "Simon"
-#define PLUGIN_VERSION "1.4"
+#define PLUGIN_VERSION "1.5"
 #define PLUGIN_URL "yash1441@yahoo.com"
 
 Handle WinCountCookie;
@@ -121,7 +121,7 @@ public Action CommandSetWins(int client, int args)
 
 	if (args != 2)
 	{
-		ReplyToCommand(client, "sm_setstars <name or #userid> <stars>");
+		ReplyToCommand(client, "sm_setwins <name or #userid> <wins>");
 		return Plugin_Continue;
 	}
 
@@ -146,8 +146,8 @@ public Action CommandSetWins(int client, int args)
 	{
 		int cookievalue;
 		cookievalue = wins;
-		IntToString(cookievalue, SavedWins[client], sizeof(SavedWins[]));
-		SetClientCookie(client, WinCountCookie, SavedWins[client]);
+		IntToString(cookievalue, SavedWins[target_list[i]], sizeof(SavedWins[]));
+		SetClientCookie(target_list[i], WinCountCookie, SavedWins[target_list[i]]);
 	}
 
 	ShowActivity2(client, "[BattleRoyale] ", "Set wins of %s to %i", target_name, wins);
