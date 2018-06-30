@@ -184,6 +184,7 @@ public Action CommandSetWins(int client, int args)
 			SQL_TQuery(db, SQLErrorCheckCallback, buffer);
 		}
 		else LogError("Failed to get Steam ID");
+		CalculateTag(target_list[i]);
 	}
 
 	ShowActivity2(client, "[ArmsRace] ", "Set wins of %s to %i", target_name, wins);
